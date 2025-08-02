@@ -194,36 +194,37 @@ history = model.fit(
     callbacks=[early_stop],
 )
 
-# model_path = r"C:\Users\rohan\Documents\ham10000_multimodal_model.h5"
-# model.save(model_path)
+model_path = r"C:\Users\rohan\Documents\ham10000_multimodal_model.h5"
+model.save(model_path)
 
-# for (img_batch, meta_batch), label_batch in val_ds.take(1):
-#     predictions = model.predict([img_batch, meta_batch])
-#
-#     predicted_classes = np.argmax(predictions, axis=1)
-#     true_classes = np.argmax(label_batch.numpy(), axis=1)
-#
-#     inv_lesion_dict = {v: k for k, v in lesion_dict.items()}
-#     index_to_label = dict(enumerate(df['cell_type'].astype('category').cat.categories))
-#
-#     print("Inference Results:\n")
-#     for i in range(len(predicted_classes)):
-#         print(f"Sample {i+1}:")
-#         print(f"  Predicted: {index_to_label[predicted_classes[i]]}")
-#         print(f"  Actual:    {index_to_label[true_classes[i]]}")
-#         print(f"  Probabilities: {np.round(predictions[i], 3)}\n")
-#
-#         plt.imshow(img_batch[i].numpy())
-#         plt.title(f"Predicted: {index_to_label[predicted_classes[i]]} | Actual: {index_to_label[true_classes[i]]}")
-#         plt.axis('off')
-#         plt.show()
+for (img_batch, meta_batch), label_batch in val_ds.take(1):
+    predictions = model.predict([img_batch, meta_batch])
 
-# test_loss, test_acc = model.evaluate(val_ds)
-# print(f"Test loss: {test_loss:.4f}, Test accuracy: {test_acc:.4f}")
-#
-# plt.plot(history.history['accuracy'], label='train accuracy')
-# plt.plot(history.history['val_accuracy'], label='val accuracy')
-# plt.plot(history.history['loss'], label='train loss')
-# plt.plot(history.history['val_loss'], label='val loss')
-# plt.legend()
-# plt.show()
+    predicted_classes = np.argmax(predictions, axis=1)
+    true_classes = np.argmax(label_batch.numpy(), axis=1)
+
+    inv_lesion_dict = {v: k for k, v in lesion_dict.items()}
+    index_to_label = dict(enumerate(df['cell_type'].astype('category').cat.categories))
+
+    print("Inference Results:\n")
+    for i in range(len(predicted_classes)):
+        print(f"Sample {i+1}:")
+        print(f"  Predicted: {index_to_label[predicted_classes[i]]}")
+        print(f"  Actual:    {index_to_label[true_classes[i]]}")
+        print(f"  Probabilities: {np.round(predictions[i], 3)}\n")
+
+        plt.imshow(img_batch[i].numpy())
+        plt.title(f"Predicted: {index_to_label[predicted_classes[i]]} | Actual: {index_to_label[true_classes[i]]}")
+        plt.axis('off')
+        plt.show()
+
+test_loss, test_acc = model.evaluate(val_ds)
+print(f"Test loss: {test_loss:.4f}, Test accuracy: {test_acc:.4f}")
+
+plt.plot(history.history['accuracy'], label='train accuracy')
+plt.plot(history.history['val_accuracy'], label='val accuracy')
+plt.plot(history.history['loss'], label='train loss')
+plt.plot(history.history['val_loss'], label='val loss')
+plt.legend()
+plt.show()
+
